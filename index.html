@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Noto Sans KR", Arial, sans-serif;
+        background: #f7f7f7;
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 32px;
+        background: #222;
+        color: #fff;
+      }
+      .header .nav-toggle,
+      .header .lang-toggle {
+        cursor: pointer;
+        background: #444;
+        border: none;
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 4px;
+        margin-left: 8px;
+        font-size: 1rem;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        max-width: 1920px;
+        margin: 40px auto;
+        padding: 0 16px;
+      }
+      .section {
+        display: flex;
+        gap: 32px;
+        align-items: stretch;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        padding: 32px 48px;
+        width: 100%;
+        max-width: 1800px;
+        margin: 0 auto;
+      }
+      .img-col {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        justify-content: flex-start;
+        min-width: 960px;
+        max-width: 1020px;
+        flex: 1 1 1020px;
+      }
+      .img-col img {
+        width: 100%;
+        min-height: 480px;
+        min-width: 480px;
+        border-radius: 8px;
+        background: #eee;
+        object-fit: contain;
+      }
+      .desc-col {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        flex: 2 1 0;
+        justify-content: flex-start;
+        min-width: 540px;
+        max-width: 600px;
+      }
+      .desc-box {
+        background: #fff;
+        border-radius: 8px;
+        padding: 20px 18px;
+        min-height: 220px;
+        box-sizing: border-box;
+        font-size: 1.08rem;
+        line-height: 1.15;
+        color: #222;
+        text-align: left;
+        display: block;
+      }
+      .desc-box ul {
+        margin: 0 0 0 24px;
+        padding: 0;
+      }
+      .desc-box li {
+        margin: 0;
+        padding: 0 0 2px 0;
+        line-height: 1.2;
+      }
+      .desc-box h3,
+      .desc-box h2,
+      .desc-box h1 {
+        margin-top: 18px;
+        margin-bottom: 10px;
+      }
+      .hidden {
+        display: none;
+      }
+      @media (max-width: 900px) {
+        .section {
+          flex-direction: column;
+          gap: 16px;
+        }
+        .img-col,
+        .desc-col {
+          max-width: 100%;
+          min-width: 0;
+        }
+      }
+      .nav-btn {
+        background: #555;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 18px;
+        margin-right: 10px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .nav-btn:hover {
+        background: #888;
+      }
+      /* 플로팅 네비게이션 스타일 */
+      #floating-nav {
+        position: fixed;
+        right: 36px;
+        bottom: 36px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      #floating-nav-btn {
+        background: #333;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+        cursor: pointer;
+        margin-bottom: 8px;
+        transition: background 0.2s;
+      }
+      #floating-nav-btn:hover {
+        background: #555;
+      }
+      #floating-nav-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.13);
+        padding: 18px 20px;
+        margin-bottom: 8px;
+        align-items: flex-end;
+        min-width: 120px;
+      }
+      #floating-nav-menu .nav-btn {
+        background: #333;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 18px;
+        font-size: 1rem;
+        cursor: pointer;
+        width: 100%;
+        text-align: right;
+        transition: background 0.2s;
+      }
+      #floating-nav-menu .nav-btn:hover {
+        background: #888;
+      }
+      #floating-nav-menu.hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div></div>
+      <div>
+        <button class="lang-toggle" onclick="toggleLang()">ENGLISH</button>
+      </div>
+    </div>
+    <!-- 플로팅 네비게이션 버튼 -->
+    <div id="floating-nav">
+      <button id="floating-nav-btn" onclick="toggleFloatingNav()">☰</button>
+      <div id="floating-nav-menu" class="hidden">
+        <button
+          class="nav-btn"
+          onclick="scrollToSection('main-section');hideFloatingNav();"
+        >
+          메인화면
+        </button>
+        <button
+          class="nav-btn"
+          onclick="scrollToSection('mypage-section');hideFloatingNav();"
+        >
+          마이페이지
+        </button>
+        <button
+          class="nav-btn"
+          onclick="scrollToSection('wallet-section');hideFloatingNav();"
+        >
+          지갑
+        </button>
+      </div>
+    </div>
+    <div class="container">
+      <!-- 섹션 1: 메인화면 -->
+      <div class="section" id="main-section">
+        <div class="img-col">
+          <img src="docs/requirements/assets/images/main.png" alt="메인화면" />
+          <img
+            src="docs/requirements/assets/images/main2.png"
+            alt="메인화면2"
+          />
+        </div>
+        <div class="desc-col">
+          <div class="desc-box" id="desc-main-ko">
+            <span id="main-ko-md"></span>
+          </div>
+          <div class="desc-box hidden" id="desc-main-en">
+            <span id="main-en-md"></span>
+          </div>
+        </div>
+      </div>
+      <!-- 섹션 2: 마이페이지 -->
+      <div class="section" id="mypage-section">
+        <div class="img-col">
+          <img
+            src="docs/requirements/assets/images/mypage.png"
+            alt="마이페이지"
+          />
+        </div>
+        <div class="desc-col">
+          <div class="desc-box" id="desc-mypage-ko">
+            <span id="mypage-ko-md"></span>
+          </div>
+          <div class="desc-box hidden" id="desc-mypage-en">
+            <span id="mypage-en-md"></span>
+          </div>
+        </div>
+      </div>
+      <!-- 섹션 3: 지갑 -->
+      <div class="section" id="wallet-section">
+        <div class="img-col">
+          <img src="docs/requirements/assets/images/wallet.png" alt="지갑" />
+        </div>
+        <div class="desc-col">
+          <div class="desc-box" id="desc-wallet-ko">
+            <span id="wallet-ko-md"></span>
+          </div>
+          <div class="desc-box hidden" id="desc-wallet-en">
+            <span id="wallet-en-md"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // 마크다운을 간단하게 HTML로 변환 (제목, 리스트, 굵게, 이탤릭)
+      function simpleMarkdown(md) {
+        // 제목
+        md = md.replace(/^### (.*)$/gm, "<h3>$1</h3>");
+        md = md.replace(/^## (.*)$/gm, "<h2>$1</h2>");
+        md = md.replace(/^# (.*)$/gm, "<h1>$1</h1>");
+        // 굵게, 이탤릭
+        md = md.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+        md = md.replace(/\*(.*?)\*/g, "<i>$1</i>");
+        // 리스트 (여러 줄을 한 번에 ul로 감싸기)
+        md = md.replace(/((?:^- .*(?:\n|$))+)/gm, function (listBlock) {
+          const items = listBlock
+            .trim()
+            .split("\n")
+            .map((line) => line.replace(/^- (.*)/, "<li>$1</li>"))
+            .join("");
+          return `<ul>${items}</ul>`;
+        });
+        // 불필요한 <br> 제거
+        return md.replace(/\n{2,}/g, "<br>");
+      }
+
+      // 마크다운 파일을 fetch로 불러와서 변환
+      function loadMarkdown(mdPath, targetId) {
+        fetch(mdPath)
+          .then((res) => res.text())
+          .then((md) => {
+            document.getElementById(targetId).innerHTML = simpleMarkdown(md);
+          });
+      }
+
+      // 언어별 마크다운 파일 경로
+      const mdFiles = {
+        ko: {
+          main: "docs/requirements/ko/main.md",
+          mypage: "docs/requirements/ko/mypage.md",
+          wallet: "docs/requirements/ko/wallet.md",
+        },
+        en: {
+          main: "docs/requirements/en/main.md",
+          mypage: "docs/requirements/en/mypage.md",
+          wallet: "docs/requirements/en/wallet.md",
+        },
+      };
+
+      // 언어별 마크다운 로드 함수
+      function loadAllMarkdown() {
+        if (isKo) {
+          loadMarkdown(mdFiles.ko.main, "main-ko-md");
+          loadMarkdown(mdFiles.ko.mypage, "mypage-ko-md");
+          loadMarkdown(mdFiles.ko.wallet, "wallet-ko-md");
+        } else {
+          loadMarkdown(mdFiles.en.main, "main-en-md");
+          loadMarkdown(mdFiles.en.mypage, "mypage-en-md");
+          loadMarkdown(mdFiles.en.wallet, "wallet-en-md");
+        }
+      }
+
+      // 언어 토글
+      let isKo = true;
+      function toggleLang() {
+        isKo = !isKo;
+        document.querySelector(".lang-toggle").innerText = isKo
+          ? "ENGLISH"
+          : "한국어";
+        document
+          .getElementById("desc-main-ko")
+          .classList.toggle("hidden", !isKo);
+        document
+          .getElementById("desc-main-en")
+          .classList.toggle("hidden", isKo);
+        document
+          .getElementById("desc-mypage-ko")
+          .classList.toggle("hidden", !isKo);
+        document
+          .getElementById("desc-mypage-en")
+          .classList.toggle("hidden", isKo);
+        loadAllMarkdown();
+      }
+
+      // 플로팅 네비게이션 토글
+      function toggleFloatingNav() {
+        const menu = document.getElementById("floating-nav-menu");
+        menu.classList.toggle("hidden");
+        if (!menu.classList.contains("hidden")) {
+          setTimeout(() => {
+            document.addEventListener("mousedown", handleNavOutsideClick);
+          }, 0);
+        } else {
+          document.removeEventListener("mousedown", handleNavOutsideClick);
+        }
+      }
+      function hideFloatingNav() {
+        const menu = document.getElementById("floating-nav-menu");
+        if (!menu.classList.contains("hidden")) {
+          menu.classList.add("hidden");
+          document.removeEventListener("mousedown", handleNavOutsideClick);
+        }
+      }
+      function handleNavOutsideClick(e) {
+        const nav = document.getElementById("floating-nav");
+        if (!nav.contains(e.target)) {
+          hideFloatingNav();
+        }
+      }
+
+      // 섹션 이동 함수
+      function scrollToSection(id) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      // 최초 로드 시 한글 마크다운 불러오기
+      loadAllMarkdown();
+    </script>
+  </body>
+</html>
