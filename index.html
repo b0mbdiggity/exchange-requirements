@@ -189,6 +189,50 @@
     </style>
   </head>
   <body>
+    <div
+      id="wp-prot"
+      style="
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <div style="text-align: center">
+        <input
+          type="password"
+          id="wp-input"
+          placeholder="비밀번호 입력"
+          style="
+            font-size: 1.2rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+          "
+        />
+        <button
+          onclick="x7y9z2()"
+          style="
+            font-size: 1.1rem;
+            padding: 8px 18px;
+            margin-left: 8px;
+            border-radius: 6px;
+            border: none;
+            background: #333;
+            color: #fff;
+            cursor: pointer;
+          "
+        >
+          입장
+        </button>
+      </div>
+    </div>
     <div class="header">
       <div></div>
       <div>
@@ -385,6 +429,24 @@
 
       // 최초 로드 시 한글 마크다운 불러오기
       loadAllMarkdown();
+
+      function x7y9z2() {
+        const k8m3n5 = document.getElementById("wp-input").value;
+        const p4q6r8 =
+          "5d244af7209f6bf7e906669e9df495a50cdd862a6f338b4cf510d90765a86215";
+        const h2j4l6 = async (text) => {
+          const msgBuffer = new TextEncoder().encode(text);
+          const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+        };
+
+        h2j4l6(k8m3n5).then((hash) => {
+          if (hash === p4q6r8) {
+            document.getElementById("wp-prot").style.display = "none";
+          }
+        });
+      }
     </script>
   </body>
 </html>
