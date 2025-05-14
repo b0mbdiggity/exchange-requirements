@@ -46,7 +46,7 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         padding: 32px 48px;
         width: 100%;
-        max-width: 1800px;
+        max-width: 1400px;
         margin: 0 auto;
       }
       .img-col {
@@ -54,17 +54,22 @@
         flex-direction: column;
         gap: 24px;
         justify-content: flex-start;
-        min-width: 960px;
-        max-width: 1020px;
+        min-width: 700px;
+        max-width: 700px;
         flex: 1 1 1020px;
       }
       .img-col img {
         width: 100%;
-        min-height: 480px;
-        min-width: 480px;
+        min-height: 336px;
+        min-width: 336px;
         border-radius: 8px;
         background: #eee;
         object-fit: contain;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+      .img-col img:hover {
+        transform: scale(1.02);
       }
       .desc-col {
         display: flex;
@@ -186,6 +191,37 @@
       #floating-nav-menu.hidden {
         display: none !important;
       }
+      /* 이미지 모달 스타일 */
+      .image-modal {
+        display: none;
+        position: fixed;
+        z-index: 1001;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        overflow: auto;
+      }
+      .modal-content {
+        margin: auto;
+        display: block;
+        max-width: 90%;
+        max-height: 90vh;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .close-modal {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -249,6 +285,11 @@
     </div>
     <div class="container">
       <!-- 섹션들은 JavaScript로 동적 생성됩니다 -->
+    </div>
+    <!-- 이미지 모달 -->
+    <div id="imageModal" class="image-modal">
+      <span class="close-modal">&times;</span>
+      <img class="modal-content" id="modalImage">
     </div>
     <script>
       // 섹션 설정
@@ -504,9 +545,37 @@
         if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
+      // 이미지 클릭 이벤트 처리
+      function initializeImageModal() {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeBtn = document.getElementsByClassName('close-modal')[0];
+
+        // 모든 이미지에 클릭 이벤트 추가
+        document.querySelectorAll('.img-col img').forEach(img => {
+          img.onclick = function() {
+            modal.style.display = "block";
+            modalImg.src = this.src;
+          }
+        });
+
+        // 닫기 버튼 클릭
+        closeBtn.onclick = function() {
+          modal.style.display = "none";
+        }
+
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+      }
+
       // 페이지 초기화 및 마크다운 로드
       initializePage();
       loadAllMarkdown();
+      initializeImageModal();
 
       function x7y9z2() {
         const k8m3n5 = document.getElementById("wp-input").value;
