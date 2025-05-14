@@ -189,7 +189,7 @@
     </style>
   </head>
   <body>
-    <div
+    <!-- <div
       id="wp-prot"
       style="
         position: fixed;
@@ -233,7 +233,7 @@
           입장
         </button>
       </div>
-    </div>
+    </div> -->
     <div class="header">
       <div></div>
       <div>
@@ -244,78 +244,113 @@
     <div id="floating-nav">
       <button id="floating-nav-btn" onclick="toggleFloatingNav()">☰</button>
       <div id="floating-nav-menu" class="hidden">
-        <button
-          class="nav-btn"
-          onclick="scrollToSection('main-section');hideFloatingNav();"
-        >
-          메인화면
-        </button>
-        <button
-          class="nav-btn"
-          onclick="scrollToSection('mypage-section');hideFloatingNav();"
-        >
-          마이페이지
-        </button>
-        <button
-          class="nav-btn"
-          onclick="scrollToSection('wallet-section');hideFloatingNav();"
-        >
-          지갑
-        </button>
+        <!-- 네비게이션 버튼들은 JavaScript로 동적 생성됩니다 -->
       </div>
     </div>
     <div class="container">
-      <!-- 섹션 1: 메인화면 -->
-      <div class="section" id="main-section">
-        <div class="img-col">
-          <img src="docs/requirements/assets/images/main.png" alt="메인화면" />
-          <img
-            src="docs/requirements/assets/images/main2.png"
-            alt="메인화면2"
-          />
-        </div>
-        <div class="desc-col">
-          <div class="desc-box" id="desc-main-ko">
-            <span id="main-ko-md"></span>
-          </div>
-          <div class="desc-box hidden" id="desc-main-en">
-            <span id="main-en-md"></span>
-          </div>
-        </div>
-      </div>
-      <!-- 섹션 2: 마이페이지 -->
-      <div class="section" id="mypage-section">
-        <div class="img-col">
-          <img
-            src="docs/requirements/assets/images/mypage.png"
-            alt="마이페이지"
-          />
-        </div>
-        <div class="desc-col">
-          <div class="desc-box" id="desc-mypage-ko">
-            <span id="mypage-ko-md"></span>
-          </div>
-          <div class="desc-box hidden" id="desc-mypage-en">
-            <span id="mypage-en-md"></span>
-          </div>
-        </div>
-      </div>
-      <!-- 섹션 3: 지갑 -->
-      <div class="section" id="wallet-section">
-        <div class="img-col">
-          <img src="docs/requirements/assets/images/wallet.png" alt="지갑" />
-        </div>
-        <div class="desc-col">
-          <div class="desc-box" id="desc-wallet-ko">
-            <span id="wallet-ko-md"></span>
-          </div>
-          <div class="desc-box hidden" id="desc-wallet-en">
-            <span id="wallet-en-md"></span>
-          </div>
-        </div>
-      </div>
+      <!-- 섹션들은 JavaScript로 동적 생성됩니다 -->
     </div>
     <script>
+      // 섹션 설정
+      const sections = [
+        {
+          id: "nav-section",
+          title: "네비게이션",
+          buttonText: {
+            ko: "네비게이션",
+            en: "Navigation",
+          },
+          images: ["nav.png", "nav3.png", "nav2.png"],
+          mdFile: "nav",
+        },
+        {
+          id: "footer-section",
+          title: "Footer",
+          buttonText: {
+            ko: "Footer",
+            en: "Footer",
+          },
+          images: ["footer.png"],
+          mdFile: "footer",
+        },
+        {
+          id: "main-section",
+          title: "홈",
+          buttonText: {
+            ko: "홈",
+            en: "Home",
+          },
+          images: ["main.png"],
+          mdFile: "main",
+        },
+        {
+          id: "trade-spot-section",
+          title: "Trade-Spot",
+          buttonText: {
+            ko: "현물 거래",
+            en: "Trade-Spot",
+          },
+          images: ["trade-spot.png", "trade-spot2.png", "trade-spot3.png", "trade-spot4.png", "trade-spot5.png", "trade-spot6.png"],
+          mdFile: "trade-spot",
+        },
+        {
+          id: "mypage-section",
+          title: "마이페이지",
+          buttonText: {
+            ko: "마이페이지",
+            en: "My Page",
+          },
+          images: ["mypage.png"],
+          mdFile: "mypage",
+        },
+        {
+          id: "wallet-section",
+          title: "지갑",
+          buttonText: {
+            ko: "지갑",
+            en: "Wallet",
+          },
+          images: ["wallet.png"],
+          mdFile: "wallet",
+        },
+        {
+          id: "assets-section",
+          title: "자산",
+          buttonText: {
+            ko: "자산",
+            en: "Assets",
+          },
+          images: ["assets.png"],
+          mdFile: "assets",
+        },
+        {
+          id: "trading-section",
+          title: "트레이딩",
+          buttonText: {
+            ko: "트레이딩",
+            en: "Trading",
+          },
+          images: ["trading.png"],
+          mdFile: "trading",
+        },
+      ];
+
+      // 마크다운 파일 경로 생성
+      const mdFiles = {
+        ko: {},
+        en: {},
+      };
+
+      // 마크다운 파일 경로 초기화
+      sections.forEach((section) => {
+        mdFiles.ko[
+          section.mdFile
+        ] = `docs/requirements/ko/${section.mdFile}.md`;
+        mdFiles.en[
+          section.mdFile
+        ] = `docs/requirements/en/${section.mdFile}.md`;
+      });
+
       // 마크다운을 간단하게 HTML로 변환 (제목, 리스트, 굵게, 이탤릭)
       function simpleMarkdown(md) {
         // 제목
@@ -325,6 +360,9 @@
         // 굵게, 이탤릭
         md = md.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
         md = md.replace(/\*(.*?)\*/g, "<i>$1</i>");
+        // 구분선
+        md = md.replace(/^---$/gm, "<hr>");
+        md = md.replace(/^\*\*\*$/gm, "<hr>");
         // 리스트 (여러 줄을 한 번에 ul로 감싸기)
         md = md.replace(/((?:^- .*(?:\n|$))+)/gm, function (listBlock) {
           const items = listBlock
@@ -334,8 +372,9 @@
             .join("");
           return `<ul>${items}</ul>`;
         });
-        // 불필요한 <br> 제거
-        return md.replace(/\n{2,}/g, "<br>");
+        // 줄 끝 공백 두 개를 개행으로 변환
+        md = md.replace(/  \n/g, "<br>\n");
+        return md;
       }
 
       // 마크다운 파일을 fetch로 불러와서 변환
@@ -347,52 +386,87 @@
           });
       }
 
-      // 언어별 마크다운 파일 경로
-      const mdFiles = {
-        ko: {
-          main: "docs/requirements/ko/main.md",
-          mypage: "docs/requirements/ko/mypage.md",
-          wallet: "docs/requirements/ko/wallet.md",
-        },
-        en: {
-          main: "docs/requirements/en/main.md",
-          mypage: "docs/requirements/en/mypage.md",
-          wallet: "docs/requirements/en/wallet.md",
-        },
-      };
+      // 섹션 HTML 생성 함수
+      function createSectionHTML(section) {
+        return `
+          <div class="section" id="${section.id}">
+            <div class="img-col">
+              ${section.images
+                .map(
+                  (img) => `
+                <img src="docs/requirements/assets/images/${img}" alt="${section.title}" />
+              `
+                )
+                .join("")}
+            </div>
+            <div class="desc-col">
+              <div class="desc-box" id="desc-${section.mdFile}-ko">
+                <span id="${section.mdFile}-ko-md"></span>
+              </div>
+              <div class="desc-box hidden" id="desc-${section.mdFile}-en">
+                <span id="${section.mdFile}-en-md"></span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // 네비게이션 버튼 생성 함수
+      function createNavButton(section) {
+        return `
+          <button class="nav-btn" onclick="scrollToSection('${
+            section.id
+          }');hideFloatingNav();">
+            ${section.buttonText[isKo ? "ko" : "en"]}
+          </button>
+        `;
+      }
+
+      // 페이지 초기화
+      function initializePage() {
+        // 섹션 생성
+        const container = document.querySelector(".container");
+        container.innerHTML = sections.map(createSectionHTML).join("");
+
+        // 네비게이션 버튼 생성
+        const navMenu = document.getElementById("floating-nav-menu");
+        navMenu.innerHTML = sections.map(createNavButton).join("");
+      }
 
       // 언어별 마크다운 로드 함수
       function loadAllMarkdown() {
-        if (isKo) {
-          loadMarkdown(mdFiles.ko.main, "main-ko-md");
-          loadMarkdown(mdFiles.ko.mypage, "mypage-ko-md");
-          loadMarkdown(mdFiles.ko.wallet, "wallet-ko-md");
-        } else {
-          loadMarkdown(mdFiles.en.main, "main-en-md");
-          loadMarkdown(mdFiles.en.mypage, "mypage-en-md");
-          loadMarkdown(mdFiles.en.wallet, "wallet-en-md");
-        }
+        const lang = isKo ? "ko" : "en";
+        sections.forEach((section) => {
+          loadMarkdown(
+            mdFiles[lang][section.mdFile],
+            `${section.mdFile}-${lang}-md`
+          );
+        });
       }
 
       // 언어 토글
       let isKo = true;
+
+      // 언어 토글 함수
       function toggleLang() {
         isKo = !isKo;
         document.querySelector(".lang-toggle").innerText = isKo
           ? "ENGLISH"
           : "한국어";
-        document
-          .getElementById("desc-main-ko")
-          .classList.toggle("hidden", !isKo);
-        document
-          .getElementById("desc-main-en")
-          .classList.toggle("hidden", isKo);
-        document
-          .getElementById("desc-mypage-ko")
-          .classList.toggle("hidden", !isKo);
-        document
-          .getElementById("desc-mypage-en")
-          .classList.toggle("hidden", isKo);
+
+        sections.forEach((section) => {
+          document
+            .getElementById(`desc-${section.mdFile}-ko`)
+            .classList.toggle("hidden", !isKo);
+          document
+            .getElementById(`desc-${section.mdFile}-en`)
+            .classList.toggle("hidden", isKo);
+        });
+
+        // 네비게이션 버튼 텍스트 업데이트
+        const navMenu = document.getElementById("floating-nav-menu");
+        navMenu.innerHTML = sections.map(createNavButton).join("");
+
         loadAllMarkdown();
       }
 
@@ -408,6 +482,7 @@
           document.removeEventListener("mousedown", handleNavOutsideClick);
         }
       }
+
       function hideFloatingNav() {
         const menu = document.getElementById("floating-nav-menu");
         if (!menu.classList.contains("hidden")) {
@@ -415,6 +490,7 @@
           document.removeEventListener("mousedown", handleNavOutsideClick);
         }
       }
+
       function handleNavOutsideClick(e) {
         const nav = document.getElementById("floating-nav");
         if (!nav.contains(e.target)) {
@@ -428,7 +504,8 @@
         if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
-      // 최초 로드 시 한글 마크다운 불러오기
+      // 페이지 초기화 및 마크다운 로드
+      initializePage();
       loadAllMarkdown();
 
       function x7y9z2() {
