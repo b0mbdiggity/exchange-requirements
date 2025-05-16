@@ -295,6 +295,9 @@
       <img class="modal-content" id="modalImage">
     </div>
     <script>
+      // 버전 정보
+      const VERSION = '1.0.1';
+      
       // 섹션 설정
       const sections = [
         {
@@ -583,7 +586,7 @@
 
       // 마크다운 파일을 fetch로 불러와서 변환
       function loadMarkdown(mdPath, targetId) {
-        fetch(mdPath)
+        fetch(mdPath + `?v=${VERSION}`)
           .then((res) => res.text())
           .then((md) => {
             document.getElementById(targetId).innerHTML = simpleMarkdown(md);
@@ -598,7 +601,7 @@
               ${section.images
                 .map(
                   (img) => `
-                <img src="docs/requirements/assets/images/${img}" alt="${section.title}" />
+                <img src="docs/requirements/assets/images/${img}?v=${VERSION}" alt="${section.title}" />
               `
                 )
                 .join("")}
