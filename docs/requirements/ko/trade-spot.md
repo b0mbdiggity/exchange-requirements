@@ -65,7 +65,11 @@
 - Total
 ---
 ## 5번 영역
-### Price
-### Amount
-### Time
-- HH:mm:ss
+### Market Trades
+- Price
+- Amount
+- Time : HH:mm:ss
+### My Trades
+- Price
+- Amount
+- Time : HH:mm:ss
