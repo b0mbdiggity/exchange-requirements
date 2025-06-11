@@ -32,13 +32,11 @@
 ### Orders (드롭다운) 
 - Spot
 - Futures
-- Earn
 ### Wallet (드롭다운) 
 - Overview
 - Spot
 - Futures
 - Copy Trading
-- Earn
 ### Notifications (드롭다운) 
 - 알림 구성: 썸네일, 내용, 날짜 
 - All
