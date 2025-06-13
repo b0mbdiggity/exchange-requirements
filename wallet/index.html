@@ -409,10 +409,10 @@
       sections.forEach((section) => {
         mdFiles.ko[
           section.mdFile
-        ] = `../docs/requirements/ko/spot/${section.mdFile}.md`;
+        ] = `../docs/requirements/ko/wallet/${section.mdFile}.md`;
         mdFiles.en[
           section.mdFile
-        ] = `../docs/requirements/en/spot/${section.mdFile}.md`;
+        ] = `../docs/requirements/en/wallet/${section.mdFile}.md`;
       });
 
       // 마크다운을 간단하게 HTML로 변환 (제목, 리스트, 굵게, 이탤릭)
@@ -458,7 +458,7 @@
               ${section.images
                 .map(
                   (img) => `
-                <img src="../docs/requirements/assets/images/spot/${img}?v=${VERSION}" alt="${section.title}" />
+                <img src="../docs/requirements/assets/images/wallet/${img}?v=${VERSION}" alt="${section.title}" />
               `
                 )
                 .join("")}
